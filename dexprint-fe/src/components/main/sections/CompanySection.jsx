@@ -8,7 +8,7 @@ export function CompanySection() {
       className="py-20 bg-white text-center md:text-left px-6 md:px-16 flex flex-col md:flex-row items-center gap-12"
     >
       <motion.img
-        src="https://images.unsplash.com/photo-1581092918407-5d7e1b8d9f9c"
+        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
         alt="Company"
         className="w-full md:w-1/2 rounded-2xl shadow-lg object-cover"
         initial={{ opacity: 0, x: -50 }}
