@@ -7,6 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ServiceSection } from "../../../components/main/sections/ServiceSection";
 import { PortfolioSection } from "../../../components/main/sections/PortofolioSeciton";
 import { CTASection } from "../../../components/main/sections/CtaSection";
+import { TestimonialSection } from "../../../components/main/sections/TestimoniSection";
+import { PartnerSection } from "../../../components/main/sections/LogoBrand";
+import { Footer } from "../../../components/main/sections/FooterSection";
 
 export function LandingPage() {
   return (
@@ -18,6 +21,9 @@ export function LandingPage() {
       <ServiceSection />
       <PortfolioSection />
       <CTASection />
+      <TestimonialSection />
+      <PartnerSection />
+      <Footer />
     </div>
   );
 }

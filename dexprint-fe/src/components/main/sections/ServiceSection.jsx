@@ -20,13 +20,13 @@ export function ServiceSection() {
       icon: <FaTshirt className="text-[#ff9a3e] text-4xl mb-4" />,
       title: "Merchandise Custom",
       desc: "T-shirt, tote bag, dan berbagai produk custom untuk promosi usaha Anda.",
-      img: "https://images.unsplash.com/photo-1618354691510-44c5463d5a6f?auto=format&fit=crop&w=800&q=80",
+      img: "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=800&q=80",
     },
     {
       icon: <FaIdCard className="text-[#ff9a3e] text-4xl mb-4" />,
       title: "Kartu Nama & Undangan",
       desc: "Cetak kartu nama, undangan, dan stationery bisnis dengan desain elegan.",
-      img: "https://images.unsplash.com/photo-1589578527966-261c76c1ab6d?auto=format&fit=crop&w=800&q=80",
+      img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
     },
   ];
 

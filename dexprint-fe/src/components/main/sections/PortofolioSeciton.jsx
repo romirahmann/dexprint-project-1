@@ -5,33 +5,48 @@ export function PortfolioSection() {
   const portfolios = [
     {
       img: "https://images.unsplash.com/photo-1607083208693-cc2a9af8f3b4?auto=format&fit=crop&w=800&q=80",
-      title: "Kemasan Produk UMKM",
-      category: "Packaging Design",
+      title: "Banner Outdoor Café",
+      category: "Banner & Sign",
     },
     {
-      img: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
-      title: "Cetak Banner Promosi",
-      category: "Large Format",
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Poster Event Kampus",
+      category: "Marketing Materials",
     },
     {
-      img: "https://images.unsplash.com/photo-1629904853693-6a495b5b3d91?auto=format&fit=crop&w=800&q=80",
-      title: "Kartu Nama Premium",
-      category: "Stationery",
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Kartu Nama Minimalis",
+      category: "Office And Stationery",
     },
     {
-      img: "https://images.unsplash.com/photo-1585386959984-a41552231693?auto=format&fit=crop&w=800&q=80",
-      title: "Merchandise Custom",
-      category: "Merch",
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Billboard Toko Retail",
+      category: "Reklame And Advertising",
     },
     {
-      img: "https://images.unsplash.com/photo-1626285098973-18e37e9862d7?auto=format&fit=crop&w=800&q=80",
-      title: "Undangan Elegant",
-      category: "Invitation",
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Souvenir Custom Logo",
+      category: "Souvenir",
     },
     {
-      img: "https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&w=800&q=80",
-      title: "Poster Event",
-      category: "Promotional Print",
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Ballpoint Stainless Eksklusif",
+      category: "Ballpoint Stainless",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Tumbler Insert Paper Premium",
+      category: "Drinkware",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Mug Printing Custom",
+      category: "Mug",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1513863323776-7ea81f962ca4?auto=format&fit=crop&w=800&q=80",
+      title: "Agenda Kulit Elegan",
+      category: "Agenda",
     },
   ];
 
@@ -47,23 +62,22 @@ export function PortfolioSection() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Portofolio Kami
+        Portofolio Terbaik Kami
       </motion.h2>
       <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
-        Lihat beberapa hasil karya cetak yang telah kami buat untuk brand, UMKM,
-        dan kreator muda. Kualitas tinggi, warna tajam, hasil memukau.
+        Inilah beberapa hasil karya unggulan dari berbagai kategori — mulai dari
+        banner, stationery, souvenir, hingga merchandise custom.
       </p>
 
       {/* Portfolio Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {portfolios.map((item, index) => (
+        {portfolios.slice(0, 9).map((item, index) => (
           <motion.div
             key={index}
             className="relative overflow-hidden rounded-2xl shadow-md group"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.4 }}
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.3 }}
           >
-            {/* Gambar */}
             <img
               src={item.img}
               alt={item.title}
@@ -71,17 +85,32 @@ export function PortfolioSection() {
             />
 
             {/* Overlay */}
-            <motion.div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <h3 className="text-white text-xl font-semibold mb-1">
+            <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <h3 className="text-white text-lg font-semibold mb-1">
                 {item.title}
               </h3>
               <p className="text-orange-300 text-sm font-medium">
                 {item.category}
               </p>
-            </motion.div>
+            </div>
           </motion.div>
         ))}
       </div>
+
+      {/* Button to full portfolio */}
+      <motion.div
+        className="mt-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <button
+          className="bg-[#ff9a3e] hover:bg-[#ff7f11] text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all"
+          onClick={() => (window.location.href = "/portfolio")}
+        >
+          Lihat Semua Portofolio
+        </button>
+      </motion.div>
     </section>
   );
 }
