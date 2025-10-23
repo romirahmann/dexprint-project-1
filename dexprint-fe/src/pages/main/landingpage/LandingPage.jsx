@@ -2,8 +2,6 @@
 import { Navbar } from "../../../components/main/navbar";
 import { HeroSection } from "../../../components/main/sections/HeroSection";
 import { CompanySection } from "../../../components/main/sections/CompanySection";
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ServiceSection } from "../../../components/main/sections/ServiceSection";
 import { PortfolioSection } from "../../../components/main/sections/PortofolioSeciton";
 import { CTASection } from "../../../components/main/sections/CtaSection";

@@ -14,7 +14,7 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            PrintEase
+            Dexprint
           </motion.h3>
           <p className="text-sm leading-relaxed">
             Solusi percetakan modern untuk UMKM dan kreator muda. Kami bantu
@@ -56,9 +56,9 @@ export function Footer() {
             Hubungi Kami
           </h4>
           <ul className="space-y-2 text-sm">
-            <li>📍 Jl. Raya UMKM No. 12, Jakarta</li>
-            <li>📞 +62 812-3456-7890</li>
-            <li>✉️ support@printease.id</li>
+            <li>📍 Jl. Raya UMKM No. 12, Karawang</li>
+            <li>📞 +62 812-xxxx-xxxx</li>
+            <li>✉️ support@dexprint.id</li>
           </ul>
         </div>
 
@@ -101,7 +101,7 @@ export function Footer() {
       {/* Bottom Line */}
       <div className="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-gray-500">
         © {new Date().getFullYear()} PrintEase. All rights reserved.
-        <span className="text-[#ff9a3e]"> Made with ❤️ for Creativity</span>
+        <span className="text-[#ff9a3e]"> Awalan Creative</span>
       </div>
     </footer>
   );

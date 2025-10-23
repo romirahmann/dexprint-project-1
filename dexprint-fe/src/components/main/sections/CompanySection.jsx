@@ -22,7 +22,7 @@ export function CompanySection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Tentang PrintEase
+          Tentang Dexprint
         </motion.h2>
         <p className="text-gray-600 mb-4 leading-relaxed">
           Kami adalah solusi printing modern yang berfokus membantu UMKM dan
