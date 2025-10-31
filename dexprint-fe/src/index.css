@@ -5,3 +5,7 @@
   --color-brand-orange: #ff9a3e;
   --color-brand-gray: #6b6b6b;
 }
+
+html {
+  scroll-behavior: smooth;
+}

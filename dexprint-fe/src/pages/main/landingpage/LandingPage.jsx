@@ -11,14 +11,25 @@ import { Footer } from "../../../components/main/sections/FooterSection";
 
 export function LandingPage() {
   return (
-    <div className="relative max-w-full min-h-screen">
+    <div className="relative max-w-full min-h-screen scroll-smooth">
       {/* NAVBAR */}
       <Navbar />
-      <HeroSection />
-      <CompanySection />
-      <ServiceSection />
-      <PortfolioSection />
-      <CTASection />
+      <section id="home">
+        <HeroSection />
+      </section>
+      <section id="layanan">
+        <ServiceSection />
+      </section>
+      <section id="produk">
+        <CompanySection />
+      </section>
+      <section id="portofolio">
+        <PortfolioSection />
+      </section>
+      <section id="kontak">
+        <CTASection />
+      </section>
+
       <TestimonialSection />
       <PartnerSection />
       <Footer />
