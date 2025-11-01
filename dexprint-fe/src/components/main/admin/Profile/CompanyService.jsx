@@ -1,23 +1,33 @@
 import { useState } from "react";
-import { FiEdit2, FiSave, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiSave, FiPlus, FiTrash2, FiImage } from "react-icons/fi";
 
-export default function CompanyServices() {
+export default function CompanyService() {
   const [services, setServices] = useState([
-    "Digital Printing & Offset",
-    "Packaging Design & Print",
-    "Banner & Large Format Print",
-    "Label & Sticker Printing",
-    "Merchandise Custom (Mug, T-shirt, Notebook)",
+    {
+      name: "Digital Printing & Offset",
+      image:
+        "https://images.unsplash.com/photo-1611078489935-0cb964de46c6?auto=format&fit=crop&w=400&q=60",
+    },
+    {
+      name: "Packaging Design & Print",
+      image:
+        "https://images.unsplash.com/photo-1606220838310-d247b8b63d8b?auto=format&fit=crop&w=400&q=60",
+    },
+    {
+      name: "Banner & Large Format Print",
+      image:
+        "https://images.unsplash.com/photo-1607419726999-48e446b84c35?auto=format&fit=crop&w=400&q=60",
+    },
   ]);
 
-  const [newService, setNewService] = useState("");
+  const [newService, setNewService] = useState({ name: "", image: "" });
   const [editingIndex, setEditingIndex] = useState(null);
-  const [tempValue, setTempValue] = useState("");
+  const [tempValue, setTempValue] = useState({ name: "", image: "" });
 
   const handleAdd = () => {
-    if (!newService.trim()) return;
-    setServices([...services, newService.trim()]);
-    setNewService("");
+    if (!newService.name.trim() || !newService.image.trim()) return;
+    setServices([...services, newService]);
+    setNewService({ name: "", image: "" });
   };
 
   const handleEdit = (index) => {
@@ -37,69 +47,112 @@ export default function CompanyServices() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">Our Services</h2>
+    <div className="bg-white/90 backdrop-blur border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+        <h2 className="text-xl font-bold text-gray-800">Our Services</h2>
+        <p className="text-gray-500 text-sm mt-1 sm:mt-0">
+          Manage your company offerings
+        </p>
       </div>
 
-      <ul className="space-y-3">
+      {/* Services Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, index) => (
-          <li
+          <div
             key={index}
-            className="flex justify-between items-center bg-orange-50 rounded-xl px-4 py-2 text-sm"
+            className="group relative bg-gradient-to-br from-white to-orange-50 border border-orange-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
           >
-            {editingIndex === index ? (
-              <div className="flex items-center gap-2 flex-1">
-                <input
-                  className="flex-1 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:border-orange-400 outline-none"
-                  value={tempValue}
-                  onChange={(e) => setTempValue(e.target.value)}
-                />
-                <button
-                  onClick={() => handleSave(index)}
-                  className="text-white bg-orange-500 hover:bg-orange-600 p-1.5 rounded-lg"
-                >
-                  <FiSave size={14} />
-                </button>
-              </div>
-            ) : (
-              <>
-                <p className="text-gray-700">{service}</p>
-                <div className="flex gap-2">
+            {/* Image */}
+            <div className="relative h-36 w-full overflow-hidden">
+              <img
+                src={service.image}
+                alt={service.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition"></div>
+            </div>
+
+            {/* Content */}
+            <div className="p-4">
+              {editingIndex === index ? (
+                <div className="flex flex-col gap-2">
+                  <input
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-orange-400 outline-none"
+                    value={tempValue.name}
+                    onChange={(e) =>
+                      setTempValue({ ...tempValue, name: e.target.value })
+                    }
+                  />
+                  <input
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-orange-400 outline-none"
+                    value={tempValue.image}
+                    placeholder="Image URL"
+                    onChange={(e) =>
+                      setTempValue({ ...tempValue, image: e.target.value })
+                    }
+                  />
                   <button
-                    onClick={() => handleEdit(index)}
-                    className="text-gray-400 hover:text-orange-500 transition"
+                    onClick={() => handleSave(index)}
+                    className="self-end bg-orange-500 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-orange-600 transition"
                   >
-                    <FiEdit2 size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(index)}
-                    className="text-gray-400 hover:text-red-500 transition"
-                  >
-                    <FiTrash2 size={16} />
+                    <FiSave size={14} className="inline mr-1" /> Save
                   </button>
                 </div>
-              </>
-            )}
-          </li>
+              ) : (
+                <>
+                  <h3 className="text-gray-800 font-semibold text-base mb-2">
+                    {service.name}
+                  </h3>
+                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                    <button
+                      onClick={() => handleEdit(index)}
+                      className="text-gray-300 hover:text-orange-500"
+                    >
+                      <FiEdit2 size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(index)}
+                      className="text-gray-300 hover:text-red-500"
+                    >
+                      <FiTrash2 size={16} />
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         ))}
-      </ul>
 
-      {/* Add new service */}
-      <div className="flex items-center gap-2 mt-4">
-        <input
-          type="text"
-          placeholder="Add new service..."
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-orange-400 outline-none"
-          value={newService}
-          onChange={(e) => setNewService(e.target.value)}
-        />
-        <button
-          onClick={handleAdd}
-          className="bg-orange-500 text-white px-3 py-2 rounded-lg hover:bg-orange-600 transition"
-        >
-          <FiPlus size={16} />
-        </button>
+        {/* Add New Card */}
+        <div className="flex flex-col items-center justify-center border-2 border-dashed border-orange-200 rounded-2xl p-6 hover:border-orange-400 hover:bg-orange-50/50 transition">
+          <FiImage size={28} className="text-orange-400 mb-3" />
+          <input
+            type="text"
+            placeholder="Service name..."
+            className="w-full text-center border-none bg-transparent text-sm text-gray-700 focus:outline-none focus:ring-0 mb-2 placeholder:text-gray-400"
+            value={newService.name}
+            onChange={(e) =>
+              setNewService({ ...newService, name: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Image URL..."
+            className="w-full text-center border-none bg-transparent text-sm text-gray-700 focus:outline-none focus:ring-0 mb-3 placeholder:text-gray-400"
+            value={newService.image}
+            onChange={(e) =>
+              setNewService({ ...newService, image: e.target.value })
+            }
+            onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+          />
+          <button
+            onClick={handleAdd}
+            className="bg-orange-500 text-white px-3 py-2 rounded-lg hover:bg-orange-600 transition flex items-center gap-2"
+          >
+            <FiPlus size={16} /> Add Service
+          </button>
+        </div>
       </div>
     </div>
   );

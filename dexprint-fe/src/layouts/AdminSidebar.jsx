@@ -35,7 +35,7 @@ export const AdminSidebar = memo(function AdminSidebar({
         { name: "Categories", url: "/admin/products/categories" },
       ],
     },
-    { name: "Konten", icon: <GrTextWrap size={18} />, url: "/admin" },
+    { name: "Konten", icon: <GrTextWrap size={18} />, url: "/admin/content" },
     { name: "Users", icon: <FiUsers size={18} />, url: "/admin/users" },
   ];
 

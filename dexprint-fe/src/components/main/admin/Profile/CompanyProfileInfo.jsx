@@ -6,6 +6,8 @@ import {
   FiMail,
   FiMapPin,
   FiGlobe,
+  FiUsers,
+  FiCalendar,
 } from "react-icons/fi";
 
 export default function CompanyProfileInfo() {
@@ -18,7 +20,7 @@ export default function CompanyProfileInfo() {
     established: "2008",
     employees: "120",
     description:
-      "Dexprint adalah percetakan besar di Karawang yang melayani kebutuhan cetak berkualitas tinggi untuk perusahaan, UMKM, dan instansi. Kami mengutamakan kecepatan, presisi, dan hasil terbaik.",
+      "Dexprint adalah percetakan besar di Karawang yang melayani kebutuhan cetak berkualitas tinggi untuk perusahaan, UMKM, dan instansi.",
   });
 
   const [editField, setEditField] = useState(null);
@@ -34,92 +36,113 @@ export default function CompanyProfileInfo() {
     setEditField(null);
   };
 
-  const renderEditableField = (label, field, icon) => (
-    <div className="flex items-start gap-4 py-3 px-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200">
-      <div className="text-orange-500 mt-1">{icon}</div>
-      <div className="flex-1">
-        <p className="text-xs text-gray-400 mb-1 font-medium uppercase tracking-wide">
+  const renderField = (label, field, icon) => (
+    <div className="group relative p-5 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200">
+      <div className="flex items-center gap-3 mb-2 text-gray-500">
+        <div className="text-orange-500">{icon}</div>
+        <span className="uppercase text-xs font-semibold tracking-wide">
           {label}
-        </p>
-
-        {editField === field ? (
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:border-orange-400 outline-none"
-              value={tempValue}
-              onChange={(e) => setTempValue(e.target.value)}
-            />
-            <button
-              onClick={() => handleSave(field)}
-              className="text-white bg-orange-500 hover:bg-orange-600 px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
-            >
-              <FiSave size={16} />
-            </button>
-          </div>
-        ) : (
-          <div className="flex justify-between items-center">
-            <p className="text-gray-700 text-sm">{profile[field]}</p>
-            <button
-              onClick={() => handleEdit(field)}
-              className="text-gray-400 hover:text-orange-500 transition-colors"
-            >
-              <FiEdit2 size={16} />
-            </button>
-          </div>
-        )}
+        </span>
       </div>
+
+      {editField === field ? (
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-orange-400 outline-none"
+            value={tempValue}
+            onChange={(e) => setTempValue(e.target.value)}
+          />
+          <button
+            onClick={() => handleSave(field)}
+            className="bg-orange-500 text-white p-2 rounded-lg hover:bg-orange-600 transition"
+          >
+            <FiSave size={16} />
+          </button>
+        </div>
+      ) : (
+        <div className="flex justify-between items-start">
+          <p className="text-gray-800 text-sm leading-relaxed warp-break-words">
+            {profile[field]}
+          </p>
+          <button
+            onClick={() => handleEdit(field)}
+            className="opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-orange-500"
+          >
+            <FiEdit2 size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 
   return (
-    <div className="space-y-4">
-      {renderEditableField(
-        "Company Name",
-        "companyName",
-        <FiGlobe size={18} />
-      )}
-      {renderEditableField("Email", "email", <FiMail size={18} />)}
-      {renderEditableField("Phone Number", "phone", <FiPhone size={18} />)}
-      {renderEditableField("Address", "address", <FiMapPin size={18} />)}
-      {renderEditableField("Website", "website", <FiGlobe size={18} />)}
-      {renderEditableField("Established", "established", <FiGlobe size={18} />)}
-      {renderEditableField("Employees", "employees", <FiGlobe size={18} />)}
+    <div className="w-full bg-linear-to-br from-orange-50 via-white to-orange-100 px-6 py-5">
+      {/* Header */}
+      <div className="max-w-full mx-auto mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">
+              Company Profile
+            </h1>
+            <p className="text-gray-500 text-sm">
+              Manage your business details easily
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Info Grid */}
+      <div className="max-w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
+        {renderField("Company Name", "companyName", <FiGlobe size={18} />)}
+        {renderField("Email", "email", <FiMail size={18} />)}
+        {renderField("Phone", "phone", <FiPhone size={18} />)}
+        {renderField("Website", "website", <FiGlobe size={18} />)}
+        {renderField("Established", "established", <FiCalendar size={18} />)}
+        {renderField("Employees", "employees", <FiUsers size={18} />)}
+      </div>
+
+      {/* Address */}
+      <div className="max-w-full mx-auto mt-5">
+        {renderField("Address", "address", <FiMapPin size={18} />)}
+      </div>
 
       {/* Description */}
-      <div className="p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200">
-        <p className="text-xs text-gray-400 mb-1 font-medium uppercase tracking-wide">
-          Company Description
-        </p>
+      <div className="max-w-full mx-auto mt-5 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-xs uppercase text-gray-500 font-semibold tracking-wide">
+            Company Description
+          </span>
+          {editField !== "description" && (
+            <button
+              onClick={() => handleEdit("description")}
+              className="text-gray-400 hover:text-orange-500 transition"
+            >
+              <FiEdit2 size={16} />
+            </button>
+          )}
+        </div>
 
         {editField === "description" ? (
           <div className="flex flex-col gap-3">
             <textarea
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-orange-400 outline-none min-h-[100px]"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-orange-400 outline-none min-h-[100px]"
               value={tempValue}
               onChange={(e) => setTempValue(e.target.value)}
             />
             <div className="flex justify-end">
               <button
                 onClick={() => handleSave("description")}
-                className="text-white bg-orange-500 hover:bg-orange-600 px-4 py-1.5 rounded-lg text-sm font-medium transition-all"
+                className="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-600 transition"
               >
                 Save
               </button>
             </div>
           </div>
         ) : (
-          <div className="flex justify-between items-start">
-            <p className="text-gray-700 text-sm leading-relaxed">
-              {profile.description}
-            </p>
-            <button
-              onClick={() => handleEdit("description")}
-              className="text-gray-400 hover:text-orange-500 transition-colors"
-            >
-              <FiEdit2 size={16} />
-            </button>
-          </div>
+          <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+            {profile.description}
+          </p>
         )}
       </div>
     </div>

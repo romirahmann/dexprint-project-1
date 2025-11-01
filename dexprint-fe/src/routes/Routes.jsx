@@ -10,6 +10,7 @@ import { AdminPageLayout } from "../layouts/adminPageLayout";
 import { LandingPageLayout } from "../layouts/landingPageLayout";
 import LoginPage from "../components/auth/LoginPage";
 import ProfilePage from "../components/main/admin/Profile/ProfilePage";
+import MainContenPage from "../components/main/admin/konten/MainContentPage";
 
 // Root route (paling atas)
 const rootRoute = createRootRoute({});
@@ -41,6 +42,12 @@ const profilePage = createRoute({
   path: "/profile",
   component: ProfilePage,
 });
+// Halaman manajamen konten
+const contentPage = createRoute({
+  getParentRoute: () => adminLayout,
+  path: "/content",
+  component: MainContenPage,
+});
 
 // Halaman login
 const loginPage = createRoute({
@@ -52,7 +59,7 @@ const loginPage = createRoute({
 // Gabungkan route menjadi pohon
 const routeTree = rootRoute.addChildren([
   userLayout.addChildren([landingPage]),
-  adminLayout.addChildren([profilePage]),
+  adminLayout.addChildren([profilePage, contentPage]),
   loginPage,
 ]);
 
