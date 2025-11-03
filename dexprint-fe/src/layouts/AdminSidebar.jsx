@@ -85,7 +85,7 @@ export const AdminSidebar = memo(function AdminSidebar({
                 transition={{ duration: 0.2 }}
                 className="font-extrabold text-xl text-gray-800 tracking-tight"
               >
-                Dexprint
+                <img src="/images/brand.png" className="w-25" alt="" />
               </motion.h1>
             )}
           </AnimatePresence>

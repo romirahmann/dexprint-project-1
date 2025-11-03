@@ -5,6 +5,7 @@ const { createServer } = require("http");
 const app = express();
 const server = createServer(app);
 const mainRoute = require("./routes/routes");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(

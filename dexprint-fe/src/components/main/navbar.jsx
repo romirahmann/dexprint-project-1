@@ -33,11 +33,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4 transition-colors duration-300">
         {/* LOGO */}
-        <h1
-          className={`text-2xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a3e] to-[#eeeeee] select-none`}
-        >
-          Dexprint
-        </h1>
+        <img src="/images/brand.png" alt="" className="w-40" />
 
         {/* MENU DESKTOP */}
         <ul
