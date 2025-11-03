@@ -3,6 +3,7 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  redirect,
 } from "@tanstack/react-router";
 
 import { LandingPage } from "../pages/main/landingpage/LandingPage";
@@ -11,6 +12,7 @@ import { LandingPageLayout } from "../layouts/landingPageLayout";
 import LoginPage from "../components/auth/LoginPage";
 import ProfilePage from "../components/main/admin/Profile/ProfilePage";
 import MainContenPage from "../components/main/admin/konten/MainContentPage";
+import { store } from "../store";
 
 // Root route (paling atas)
 const rootRoute = createRootRoute({});
@@ -34,6 +36,18 @@ const adminLayout = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin",
   component: AdminPageLayout,
+  beforeLoad: ({ context }) => {
+    const { store } = context;
+    const state = store.getState();
+
+    // Cek auth
+    if (!state.auth.isAuthenticated) {
+      console.warn("UNAUTHORIZED! Redirecting to login...");
+      throw redirect({
+        to: "/auth/login",
+      });
+    }
+  },
 });
 
 // Halaman profil admin
@@ -65,4 +79,5 @@ const routeTree = rootRoute.addChildren([
 
 export const router = createRouter({
   routeTree,
+  context: { store },
 });

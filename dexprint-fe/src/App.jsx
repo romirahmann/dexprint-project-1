@@ -1,10 +1,13 @@
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./routes/Routes";
+import { AlertProvider } from "./store/AlertContext";
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <AlertProvider>
+        <RouterProvider router={router} />
+      </AlertProvider>
     </>
   );
 }

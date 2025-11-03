@@ -10,6 +10,7 @@ const GetByUserID = async (userId) =>
     .innerJoin("user_roles as r")
     .where("u.userId", userId)
     .first();
+const insert = async (data) => db("users").insert(data);
 const update = async (userId, data) =>
   db("users").where({ userId }).update(data);
 const remove = async (userId) => db("users").where({ userId }).del();
@@ -19,4 +20,5 @@ module.exports = {
   GetByUserID,
   update,
   remove,
+  insert,
 };

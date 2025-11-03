@@ -16,7 +16,7 @@ app.use(
   })
 );
 
-api.use("/api", mainRoute);
+app.use("/api", mainRoute);
 
 // === Root path ===
 app.get("/", (req, res) => {

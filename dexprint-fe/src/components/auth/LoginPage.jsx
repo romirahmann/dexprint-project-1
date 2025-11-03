@@ -1,32 +1,57 @@
-import { useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { useAlert } from "../../store/AlertContext";
+import api from "../../services/axios.service";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../store/slices/authSlice";
+import { useRouter } from "@tanstack/react-router";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { showAlert } = useAlert();
+  const dispatch = useDispatch();
+  const route = useRouter();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      alert("Login success! 🚀");
-    }, 1200);
+    if (!form.username || !form.password) {
+      showAlert("error", "username & password required!");
+    }
+
+    try {
+      let res = await api.post("/auth/login", form);
+      const data = res.data.data;
+
+      const mockUser = data.userData;
+      const mockToken = data.token;
+
+      dispatch(loginSuccess({ user: mockUser, token: mockToken }));
+
+      showAlert("success", "Login Successfully!");
+      route.navigate({ to: "/admin" });
+    } catch (error) {
+      console.log(error);
+      showAlert("error", "Login Filed, Please try again!");
+    } finally {
+      setLoading(true);
+    }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-100 via-white to-orange-50 transition-colors duration-300">
-      <div className="w-full max-w-sm bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 border border-white/40 transition-all">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-orange-100 via-white to-orange-50 transition-colors duration-300">
+      <div className="w-full max-w-sm bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 border border-white/40 transition-all ">
         {/* Logo / Brand */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-orange-500">Dexprint</h1>
-          <p className="text-sm text-gray-500 mt-1">Welcome back 👋</p>
+        <div className="flex flex-col items-center mb-8">
+          <img src="/images/brand.png" className="w-40" alt="" />
+          <p className="text-sm text-gray-500 mt-3">Welcome back 👋</p>
         </div>
 
         {/* Form */}

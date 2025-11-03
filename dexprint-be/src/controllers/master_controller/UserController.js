@@ -1,4 +1,5 @@
 const userModel = require("../../models/user.model");
+const { hashPassword } = require("../../services/auth.service");
 const api = require("../../tools/common");
 
 const getAllUser = async (req, res) => {
@@ -10,6 +11,22 @@ const getAllUser = async (req, res) => {
     return api.error(res, "Internal Server Error", 500);
   }
 };
+
+const register = async (req, res) => {
+  let data = req.body;
+  try {
+    if (!data || !data.username || !data.password)
+      return api.error(res, "Username & password required!", 500);
+
+    data.password = await hashPassword(data.password);
+    let result = await userModel.insert(data);
+    return api.success(res, result);
+  } catch (error) {
+    console.log(error);
+    return api.error(res, "Internal Server Error", 500);
+  }
+};
+
 const getUserByID = async (req, res) => {
   let { id } = req.params;
   try {
@@ -49,4 +66,5 @@ module.exports = {
   getUserByID,
   updateUser,
   deletedUser,
+  register,
 };

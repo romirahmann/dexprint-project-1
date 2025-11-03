@@ -2,10 +2,12 @@
 import { FiBell, FiMenu, FiSearch, FiLogOut, FiUser } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export function AdminTopbar({ onToggleSidebar }) {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -14,6 +16,7 @@ export function AdminTopbar({ onToggleSidebar }) {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
+    console.log(user);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -57,7 +60,9 @@ export function AdminTopbar({ onToggleSidebar }) {
           <div className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-500 text-white font-semibold">
             A
           </div>
-          <span className="hidden md:inline text-sm font-medium">Admin</span>
+          <span className="hidden md:inline text-sm font-medium">
+            {user?.username || "Guest"}
+          </span>
         </motion.button>
 
         {/* User Popup */}
@@ -71,8 +76,10 @@ export function AdminTopbar({ onToggleSidebar }) {
               className="absolute right-0 top-[3.5rem] w-56 bg-white shadow-lg rounded-xl border border-gray-100 py-2 z-50"
             >
               <div className="px-4 py-2 border-b border-gray-100">
-                <p className="font-semibold text-gray-800">Admin</p>
-                <p className="text-sm text-gray-500">admin@awalan.coffee</p>
+                <p className="font-semibold text-gray-800">
+                  {user?.username || "Guest"}
+                </p>
+                <p className="text-sm text-gray-500">{user?.email || ""}</p>
               </div>
               <button className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all">
                 <FiUser /> Profile
