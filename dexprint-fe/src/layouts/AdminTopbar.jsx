@@ -2,13 +2,17 @@
 import { FiBell, FiMenu, FiSearch, FiLogOut, FiUser } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/slices/authSlice";
+import { persistor } from "../store";
+import { useRouter } from "@tanstack/react-router";
 
 export function AdminTopbar({ onToggleSidebar }) {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
+  const route = useRouter();
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
@@ -16,9 +20,16 @@ export function AdminTopbar({ onToggleSidebar }) {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    console.log(user);
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    persistor.purge();
+    setIsUserMenuOpen(false);
+    route.navigate("/login");
+  };
 
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between gap-4 px-4 sm:px-6 py-3 bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
@@ -73,18 +84,21 @@ export function AdminTopbar({ onToggleSidebar }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 top-[3.5rem] w-56 bg-white shadow-lg rounded-xl border border-gray-100 py-2 z-50"
+              className="absolute right-0 top-14 w-56 bg-white shadow-lg rounded-xl border border-gray-100 py-2 z-50"
             >
               <div className="px-4 py-2 border-b border-gray-100">
                 <p className="font-semibold text-gray-800">
                   {user?.username || "Guest"}
                 </p>
-                <p className="text-sm text-gray-500">{user?.email || ""}</p>
+                <p className="text-sm text-gray-500">{user?.roleName || ""}</p>
               </div>
-              <button className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all">
+              {/* <button className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all">
                 <FiUser /> Profile
-              </button>
-              <button className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-all">
+              </button> */}
+              <button
+                onClick={() => handleLogout()}
+                className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-all"
+              >
                 <FiLogOut /> Logout
               </button>
             </motion.div>

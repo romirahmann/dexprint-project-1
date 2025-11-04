@@ -25,9 +25,6 @@ export default function ProfilePage() {
       >
         {/* Profile Info */}
         <CompanyProfileInfo profile={profile} />
-
-        {/* Services */}
-        <CompanyService />
       </div>
     </div>
   );

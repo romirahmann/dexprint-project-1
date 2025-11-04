@@ -4,7 +4,11 @@ import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { useAlert } from "../../store/AlertContext";
 import api from "../../services/axios.service";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../../store/slices/authSlice";
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+} from "../../store/slices/authSlice";
 import { useRouter } from "@tanstack/react-router";
 
 export default function LoginPage() {
@@ -21,27 +25,32 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!form.username || !form.password) {
       showAlert("error", "username & password required!");
+      return;
     }
 
+    dispatch(loginStart());
+    setLoading(true);
+
     try {
-      let res = await api.post("/auth/login", form);
+      const res = await api.post("/auth/login", form);
       const data = res.data.data;
-
-      const mockUser = data.userData;
-      const mockToken = data.token;
-
-      dispatch(loginSuccess({ user: mockUser, token: mockToken }));
+      console.log(data);
+      dispatch(
+        loginSuccess({
+          user: data,
+          token: data.access_token,
+        })
+      );
 
       showAlert("success", "Login Successfully!");
       route.navigate({ to: "/admin" });
     } catch (error) {
-      console.log(error);
-      showAlert("error", "Login Filed, Please try again!");
+      dispatch(loginFailure(error.message));
+      showAlert("error", "Login Failed, Please try again!");
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 

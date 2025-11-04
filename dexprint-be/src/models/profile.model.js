@@ -12,7 +12,9 @@ const getProfile = async () =>
       "websiteName",
       "employees",
       "address",
-      "description"
+      "description",
+      "vision",
+      "mission"
     )
     .first();
 
@@ -28,7 +30,9 @@ const getById = async (id) =>
       "websiteName",
       "employees",
       "address",
-      "description"
+      "description",
+      "vision",
+      "mission"
     )
     .where("profileId", id)
     .first();

@@ -40,8 +40,19 @@ const createCompany = async (req, res) => {
 // UPDATE COMPANY PROFILE
 const updateCompany = async (req, res) => {
   const { id } = req.params;
-  const data = req.body;
+  let data = { ...req.body };
+
   try {
+    if (data.established) {
+      const date = new Date(data.established);
+      if (!isNaN(date)) {
+        data.established = date.toISOString().slice(0, 10);
+      } else {
+        console.warn("Invalid date format received:", data.established);
+        delete data.established;
+      }
+    }
+
     const result = await companyModel.update(id, data);
     return api.success(res, result, "Company profile updated successfully");
   } catch (error) {
