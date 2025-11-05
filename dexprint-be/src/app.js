@@ -1,6 +1,8 @@
+// server.js
 const express = require("express");
 const cors = require("cors");
 const { createServer } = require("http");
+const socket = require("./services/socket.service"); // tambahkan ini
 
 const app = express();
 const server = createServer(app);
@@ -26,12 +28,15 @@ app.get("/", (req, res) => {
   });
 });
 
-// === Catch-all 404 (tanpa '*') ===
+// === Catch-all 404 ===
 app.use((req, res) => {
   res.status(404).json({
     status: false,
     message: "Endpoint not found",
   });
 });
+
+// === INIT WEBSOCKET ===
+socket.init(server);
 
 module.exports = { app, server };

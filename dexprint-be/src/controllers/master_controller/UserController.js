@@ -1,66 +1,119 @@
 const userModel = require("../../models/user.model");
 const { hashPassword } = require("../../services/auth.service");
 const api = require("../../tools/common");
-
+const { emit } = require("../../services/socket.service");
+/* ============================================================
+   ✅ GET ALL USERS
+============================================================ */
 const getAllUser = async (req, res) => {
   try {
-    let users = await userModel.getAll();
+    const users = await userModel.getAll();
     return api.success(res, users);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return api.error(res, "Internal Server Error", 500);
   }
 };
 
+/* ============================================================
+   ✅ REGISTER / CREATE USER
+============================================================ */
 const register = async (req, res) => {
-  let data = req.body;
+  const data = req.body;
   try {
-    if (!data || !data.username || !data.password)
-      return api.error(res, "Username & password required!", 500);
+    if (!data?.username || !data?.password) {
+      return api.error(res, "Username & password required!", 400);
+    }
 
+    // 🔒 Hash password sebelum simpan
     data.password = await hashPassword(data.password);
-    let result = await userModel.insert(data);
-    return api.success(res, result);
+
+    const result = await userModel.insert(data);
+
+    // 🔔 Emit event ke semua client
+    emit("user_created", {
+      message: "New user registered",
+      user: { id: result[0], username: data.username },
+    });
+
+    return api.success(res, result, "User registered successfully");
   } catch (error) {
-    console.log(error);
+    console.error("❌ Error register:", error);
     return api.error(res, "Internal Server Error", 500);
   }
 };
 
+/* ============================================================
+   ✅ GET USER BY ID
+============================================================ */
 const getUserByID = async (req, res) => {
-  let { id } = req.params;
+  const { id } = req.params;
   try {
-    let user = await userModel.GetByUserID(id);
+    const user = await userModel.GetByUserID(id);
+    if (!user) return api.error(res, "User not found", 404);
     return api.success(res, user);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return api.error(res, "Internal Server Error", 500);
   }
 };
 
+/* ============================================================
+   ✅ UPDATE USER
+============================================================ */
 const updateUser = async (req, res) => {
-  let { id } = req.params;
-  let data = req.body;
+  const { id } = req.params;
+  const data = req.body;
+
   try {
-    let result = await userModel.update(id, data);
-    return api.success(res, result);
+    const existing = await userModel.GetByUserID(id);
+    if (!existing) return api.error(res, "User not found", 404);
+
+    const result = await userModel.update(id, data);
+
+    // 🔔 Emit event update
+    emit("user_updated", {
+      message: "User data updated",
+      userId: id,
+      changes: data,
+    });
+
+    return api.success(res, result, "User updated successfully");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return api.error(res, "Internal Server Error", 500);
   }
 };
 
+/* ============================================================
+   ✅ DELETE USER
+============================================================ */
 const deletedUser = async (req, res) => {
-  let { id } = req.params;
+  const { id } = req.params;
+
   try {
-    let result = await userModel.remove(id);
-    return api.success(res, result);
+    const user = await userModel.GetByUserID(id);
+    if (!user) return api.error(res, "User not found", 404);
+
+    const result = await userModel.remove(id);
+
+    // 🔔 Emit event delete
+    emit("user_deleted", {
+      message: "User deleted",
+      userId: id,
+      username: user.username,
+    });
+
+    return api.success(res, result, "User deleted successfully");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return api.error(res, "Internal Server Error", 500);
   }
 };
 
+/* ============================================================
+   ✅ EXPORT MODULE
+============================================================ */
 module.exports = {
   getAllUser,
   getUserByID,

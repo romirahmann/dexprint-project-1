@@ -1,6 +1,6 @@
-import BrandPartnerSection from "./BrandPartnerSection";
-import HeroSectionManager from "./HeroSection";
-import ReviewSection from "./ReviewSection";
+import ClientSection from "../../../components/main/admin/konten/ClientSection";
+import HeroSectionManager from "../../../components/main/admin/konten/HeroSection";
+import ReviewSection from "../../../components/main/admin/konten/ReviewSection";
 
 export default function MainContentPage() {
   return (
@@ -26,7 +26,7 @@ export default function MainContentPage() {
         {/* Section */}
         <HeroSectionManager />
         <ReviewSection />
-        <BrandPartnerSection />
+        <ClientSection />
       </div>
     </div>
   );
