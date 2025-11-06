@@ -7,32 +7,6 @@ import { baseApi } from "../../../services/api.service";
 
 export function TestimonialSection() {
   const [testimonials, setTestimonials] = useState([]);
-  // const testimonials = [
-  //   {
-  //     name: "Dewi Anjani",
-  //     role: "Owner Dewa Craft",
-  //     message:
-  //       "Pelayanan cepat dan hasil cetak sangat memuaskan! PrintEase membantu kemasan produk saya terlihat lebih profesional.",
-  //     image:
-  //       "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
-  //   },
-  //   {
-  //     name: "Rizky Maulana",
-  //     role: "Desainer Grafis Freelance",
-  //     message:
-  //       "Suka banget dengan hasil warna dan ketepatan cetaknya. Proses order juga mudah, cocok banget buat kreator muda.",
-  //     image:
-  //       "https://images.unsplash.com/photo-1603415526960-f7e0328a40f7?auto=format&fit=crop&w=200&q=80",
-  //   },
-  //   {
-  //     name: "Sari Putri",
-  //     role: "UMKM Snack Lokal",
-  //     message:
-  //       "PrintEase bantu banget buat kemasan snack saya tampil lebih menarik dan eksklusif. Recommended banget!",
-  //     image:
-  //       "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
-  //   },
-  // ];
 
   useEffect(() => {
     const fetchTestimonial = async () => {

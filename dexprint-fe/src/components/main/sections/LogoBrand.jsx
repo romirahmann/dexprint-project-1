@@ -1,32 +1,26 @@
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import api from "../../../services/axios.service";
+import { baseApi } from "../../../services/api.service";
 
 export function PartnerSection() {
-  const partners = [
-    {
-      name: "Tokopedia",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Tokopedia.svg",
-    },
-    {
-      name: "Shopee",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Shopee.svg",
-    },
-    {
-      name: "Grab",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Grab_logo.svg",
-    },
-    {
-      name: "Gojek",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/0/02/Gojek_logo_2021.svg",
-    },
-    {
-      name: "Bukalapak",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/9/95/Bukalapak_logo.svg",
-    },
-  ];
+  let [clients, setClient] = useState([]);
+
+  useEffect(() => {
+    const fetchClient = async () => {
+      try {
+        let res = await api.get("/master/clients");
+        setClient(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchClient();
+  }, []);
 
   // Gandakan array supaya animasi terasa seamless
-  const duplicatedPartners = [...partners, ...partners];
+  const duplicatedPartners = [...clients, ...clients];
 
   return (
     <section className="py-16 bg-white overflow-hidden">
@@ -62,8 +56,8 @@ export function PartnerSection() {
               className="flex-shrink-0 w-28 md:w-36 grayscale hover:grayscale-0 transition duration-300"
             >
               <img
-                src={brand.logo}
-                alt={brand.name}
+                src={`${baseApi}master/image/${brand.clientLogo}`}
+                alt={brand.clientName}
                 className="object-contain w-full h-12"
               />
             </div>

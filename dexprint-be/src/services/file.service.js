@@ -11,7 +11,7 @@ const getFile = async (req, res) => {
     if (!filename) return api.error(res, "Filename is required", 400);
 
     const filePath = path.join(uploadDir, filename);
-
+    console.log("Serving file from:", filePath);
     if (!fs.existsSync(filePath)) {
       return api.error(res, "File not found", 404);
     }
