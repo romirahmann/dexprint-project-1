@@ -21,7 +21,7 @@ export function Navbar() {
     setOpen(false);
   };
 
-  const menuItems = ["Home", "Layanan", "Produk", "Portofolio", "Kontak"];
+  const menuItems = ["Home", "Layanan", "Produk", "Kontak"];
 
   return (
     <nav

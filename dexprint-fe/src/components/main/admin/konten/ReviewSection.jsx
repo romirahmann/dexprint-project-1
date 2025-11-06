@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useState } from "react";
-import { FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 import { Modal } from "../../../../shared/Modal";
 import { useAlert } from "../../../../store/AlertContext";
 import api from "../../../../services/axios.service";
@@ -12,6 +12,7 @@ import { FormAddReview } from "./form/FormAddReview";
 export default function ReviewSection() {
   const [reviews, setReviews] = useState([]);
   const [modal, setModal] = useState(false);
+  const [editData, setEditData] = useState(null); // ✅ new state
   const { showAlert } = useAlert();
 
   // 🔁 Fetch data dari backend
@@ -24,7 +25,6 @@ export default function ReviewSection() {
     }
   }, []);
 
-  // ⚡ Socket IO listener seperti ClientSection
   useEffect(() => {
     fetchReview();
 
@@ -44,6 +44,12 @@ export default function ReviewSection() {
     }
   };
 
+  // ✏️ Edit review handler
+  const handleEdit = (review) => {
+    setEditData(review);
+    setModal(true);
+  };
+
   return (
     <div className="bg-white rounded-2xl p-6 shadow border border-gray-100">
       <div className="flex justify-between items-center mb-4">
@@ -51,7 +57,10 @@ export default function ReviewSection() {
           Customer Reviews
         </h2>
         <button
-          onClick={() => setModal(true)}
+          onClick={() => {
+            setEditData(null); // reset
+            setModal(true);
+          }}
           className="flex items-center gap-2 text-sm bg-orange-500 text-white px-3 py-2 rounded-lg hover:bg-orange-600"
         >
           <FiPlus /> Add
@@ -72,18 +81,24 @@ export default function ReviewSection() {
                     ? `${baseApi}master/file/${review.fileIMG}`
                     : "/assets/default-avatar.png"
                 }
-                alt={review.nama}
+                alt={review.name}
                 className="w-14 h-14 rounded-full object-cover border border-gray-200"
               />
               <div>
-                <p className="font-semibold text-gray-800">{review.nama}</p>
+                <p className="font-semibold text-gray-800">{review.name}</p>
                 <p className="text-xs text-gray-500">{review.tenant}</p>
               </div>
             </div>
             <p className="text-gray-700 text-sm italic mb-3">
               “{review.feedback}”
             </p>
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => handleEdit(review)}
+                className="text-gray-400 hover:text-orange-500"
+              >
+                <FiEdit2 size={16} />
+              </button>
               <button
                 onClick={() => removeReview({ review, i })}
                 className="text-gray-400 hover:text-red-500 transition"
@@ -95,14 +110,18 @@ export default function ReviewSection() {
         ))}
       </div>
 
-      {/* Modal Tambah Review */}
+      {/* Modal Tambah/Edit Review */}
       {modal && (
         <Modal
           isOpen={modal}
           onClose={() => setModal(false)}
-          title="Add Review"
+          title={editData ? "Edit Review" : "Add Review"}
         >
-          <FormAddReview onClose={() => setModal(false)} />
+          <FormAddReview
+            onClose={() => setModal(false)}
+            defaultValue={editData}
+            mode={editData ? "edit" : "add"}
+          />
         </Modal>
       )}
     </div>

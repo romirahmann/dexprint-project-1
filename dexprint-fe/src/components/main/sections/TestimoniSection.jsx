@@ -1,34 +1,52 @@
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { FaQuoteLeft } from "react-icons/fa";
+import api from "../../../services/axios.service";
+import { baseApi } from "../../../services/api.service";
 
 export function TestimonialSection() {
-  const testimonials = [
-    {
-      name: "Dewi Anjani",
-      role: "Owner Dewa Craft",
-      message:
-        "Pelayanan cepat dan hasil cetak sangat memuaskan! PrintEase membantu kemasan produk saya terlihat lebih profesional.",
-      image:
-        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
-    },
-    {
-      name: "Rizky Maulana",
-      role: "Desainer Grafis Freelance",
-      message:
-        "Suka banget dengan hasil warna dan ketepatan cetaknya. Proses order juga mudah, cocok banget buat kreator muda.",
-      image:
-        "https://images.unsplash.com/photo-1603415526960-f7e0328a40f7?auto=format&fit=crop&w=200&q=80",
-    },
-    {
-      name: "Sari Putri",
-      role: "UMKM Snack Lokal",
-      message:
-        "PrintEase bantu banget buat kemasan snack saya tampil lebih menarik dan eksklusif. Recommended banget!",
-      image:
-        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
-    },
-  ];
+  const [testimonials, setTestimonials] = useState([]);
+  // const testimonials = [
+  //   {
+  //     name: "Dewi Anjani",
+  //     role: "Owner Dewa Craft",
+  //     message:
+  //       "Pelayanan cepat dan hasil cetak sangat memuaskan! PrintEase membantu kemasan produk saya terlihat lebih profesional.",
+  //     image:
+  //       "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
+  //   },
+  //   {
+  //     name: "Rizky Maulana",
+  //     role: "Desainer Grafis Freelance",
+  //     message:
+  //       "Suka banget dengan hasil warna dan ketepatan cetaknya. Proses order juga mudah, cocok banget buat kreator muda.",
+  //     image:
+  //       "https://images.unsplash.com/photo-1603415526960-f7e0328a40f7?auto=format&fit=crop&w=200&q=80",
+  //   },
+  //   {
+  //     name: "Sari Putri",
+  //     role: "UMKM Snack Lokal",
+  //     message:
+  //       "PrintEase bantu banget buat kemasan snack saya tampil lebih menarik dan eksklusif. Recommended banget!",
+  //     image:
+  //       "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
+  //   },
+  // ];
+
+  useEffect(() => {
+    const fetchTestimonial = async () => {
+      try {
+        let res = await api.get("master/reviews");
+        console.log(res.data.data);
+        setTestimonials(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchTestimonial();
+  }, []);
 
   return (
     <section className="py-20 bg-gray-50 text-center">
@@ -56,15 +74,15 @@ export function TestimonialSection() {
           >
             <FaQuoteLeft className="text-[#ff9a3e] text-3xl absolute top-4 left-4 opacity-30" />
             <img
-              src={item.image}
+              src={`${baseApi}master/file/${item.fileIMG}`}
               alt={item.name}
               className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-[#ff9a3e]/40"
             />
             <p className="text-gray-700 italic mb-4 leading-relaxed">
-              “{item.message}”
+              “{item.feedback}”
             </p>
             <h4 className="text-lg font-semibold text-gray-900">{item.name}</h4>
-            <span className="text-sm text-gray-500">{item.role}</span>
+            <span className="text-sm text-gray-500">{item.tenant}</span>
           </motion.div>
         ))}
       </div>

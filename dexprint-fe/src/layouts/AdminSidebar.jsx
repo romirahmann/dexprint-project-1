@@ -163,6 +163,7 @@ export const AdminSidebar = memo(function AdminSidebar({
                         <motion.button
                           key={j}
                           whileTap={{ scale: 0.98 }}
+                          onClick={() => route.navigate({ to: sub.url })} // <-- ini yang benar
                           className="block text-left w-full text-sm text-gray-600 hover:text-orange-600 hover:bg-orange-50 px-3 py-1.5 rounded-lg transition-all"
                         >
                           {sub.name}

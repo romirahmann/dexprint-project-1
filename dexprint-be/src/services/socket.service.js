@@ -12,7 +12,7 @@ function init(server) {
     console.log("🔌 WebSocket client connected:", socket.id);
 
     socket.on("disconnect", () => {
-      console.log("🔌 WebSocket client connected:", socket.id);
+      console.log("❌ WebSocket client disconnected:", socket.id);
     });
   });
 

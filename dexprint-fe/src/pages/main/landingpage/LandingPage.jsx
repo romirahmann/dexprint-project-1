@@ -8,6 +8,7 @@ import { CTASection } from "../../../components/main/sections/CtaSection";
 import { TestimonialSection } from "../../../components/main/sections/TestimoniSection";
 import { PartnerSection } from "../../../components/main/sections/LogoBrand";
 import { Footer } from "../../../components/main/sections/FooterSection";
+import { ProductSection } from "../../../components/main/sections/ProductSection";
 
 export function LandingPage() {
   return (
@@ -20,12 +21,15 @@ export function LandingPage() {
       <section id="layanan">
         <ServiceSection />
       </section>
-      <section id="produk">
+      <section id="company">
         <CompanySection />
       </section>
-      <section id="portofolio">
-        <PortfolioSection />
+      <section id="product">
+        <ProductSection />
       </section>
+      {/* <section id="portofolio">
+        <PortfolioSection />
+      </section> */}
       <section id="kontak">
         <CTASection />
       </section>

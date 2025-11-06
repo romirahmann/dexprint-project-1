@@ -1,30 +1,57 @@
 /* eslint-disable no-unused-vars */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiEdit2, FiSave, FiUpload, FiTrash2, FiPlus } from "react-icons/fi";
+import { Modal } from "../../../../shared/Modal";
+import api from "../../../../services/axios.service";
+import { useAlert } from "../../../../store/AlertContext";
+import { listenToUpdate } from "../../../../services/socket.service";
+import { ApiUrl, baseApi } from "../../../../services/api.service";
 
 export default function HeroSectionManager() {
   const [hero, setHero] = useState({
-    tagline: "Cetak Kualitas Terbaik, Untuk Setiap Kebutuhan Anda.",
-    subtext: "Percetakan profesional dengan hasil cepat, rapi, dan presisi.",
-    banners: [
-      "/assets/banner1.jpg",
-      "/assets/banner2.jpg",
-      "/assets/banner3.jpg",
-    ],
+    tagline: "...",
+    subtext: "...",
+    banners: [],
   });
-
+  const { showAlert } = useAlert();
+  const [isEditBanner, setIsEditBanner] = useState(false);
   const [editField, setEditField] = useState(null);
   const [tempValue, setTempValue] = useState("");
   const fileInputs = useRef([]);
+
+  useEffect(() => {
+    fetchHeroIMG();
+    const events = ["hero:create", "hero:update", "hero:delete"];
+    events.forEach((event) => listenToUpdate(event, "fetchReview"));
+  }, []);
+
+  const fetchHeroIMG = async () => {
+    try {
+      let res = await api.get("/master/heros");
+      setHero({ ...hero, banners: res.data.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleEdit = (field, value) => {
     setEditField(field);
     setTempValue(value);
   };
 
-  const handleSave = (field) => {
+  const handleSave = async (field) => {
     setHero({ ...hero, [field]: tempValue });
+    console.log({
+      [field]: tempValue,
+    });
+
+    try {
+      await api.put(`/master/hero/${1}`);
+    } catch (error) {
+      console.log(error);
+    }
+
     setEditField(null);
   };
 
@@ -39,6 +66,7 @@ export default function HeroSectionManager() {
   };
 
   const triggerFileInput = (index) => {
+    setIsEditBanner(true);
     fileInputs.current[index].click();
   };
 
@@ -48,10 +76,33 @@ export default function HeroSectionManager() {
   };
 
   const handleAddBanner = () => {
+    setIsEditBanner(true);
     setHero({
       ...hero,
       banners: [...hero.banners, "/assets/default-banner.jpg"],
     });
+  };
+  const handleSaveBanner = async () => {
+    try {
+      const formData = new FormData();
+
+      fileInputs.current.forEach((input, index) => {
+        if (input && input.files.length > 0) {
+          formData.append("files", input.files[0]);
+        }
+      });
+
+      // for (let pair of formData.entries()) {
+      //   console.log(pair[0], pair[1]);
+      // }
+
+      await api.post("/master/hero", formData);
+      showAlert("success", "Upload Successfully!");
+      setIsEditBanner(false);
+    } catch (err) {
+      showAlert("error", "Upload Failed, Please Try Again!");
+      console.error(err);
+    }
   };
 
   return (
@@ -81,11 +132,12 @@ export default function HeroSectionManager() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
-                className="relative w-full aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden group shadow-sm"
+                className="relative w-full aspect-video bg-gray-100 rounded-xl overflow-hidden group shadow-sm"
               >
                 <img
-                  src={banner}
-                  alt={`Banner ${i + 1}`}
+                  src={`${baseApi}master/hero/file/${banner.file}`}
+                  alt={`${banner.note}`}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
 
@@ -105,6 +157,7 @@ export default function HeroSectionManager() {
                   >
                     <FiTrash2 size={16} />
                   </button>
+                  <button onClick={() => console.log(banner)}>CEK</button>
                 </div>
 
                 <input
@@ -118,69 +171,14 @@ export default function HeroSectionManager() {
             ))}
           </AnimatePresence>
         </div>
-      </div>
-
-      {/* Tagline */}
-      <div className="mb-6">
-        <p className="text-xs text-gray-400 uppercase mb-1 font-semibold">
-          Tagline
-        </p>
-        {editField === "tagline" ? (
-          <div className="flex items-center gap-2">
-            <input
-              value={tempValue}
-              onChange={(e) => setTempValue(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
-            />
-            <button
-              onClick={() => handleSave("tagline")}
-              className="bg-orange-500 text-white px-3 py-1.5 rounded-lg"
-            >
-              <FiSave size={16} />
-            </button>
-          </div>
-        ) : (
-          <div className="flex justify-between items-center">
-            <p className="text-gray-700">{hero.tagline}</p>
-            <button
-              onClick={() => handleEdit("tagline", hero.tagline)}
-              className="text-gray-400 hover:text-orange-500"
-            >
-              <FiEdit2 size={16} />
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Sub Description */}
-      <div>
-        <p className="text-xs text-gray-400 uppercase mb-1 font-semibold">
-          Sub Description
-        </p>
-        {editField === "subtext" ? (
-          <div className="flex items-center gap-2">
-            <input
-              value={tempValue}
-              onChange={(e) => setTempValue(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
-            />
-            <button
-              onClick={() => handleSave("subtext")}
-              className="bg-orange-500 text-white px-3 py-1.5 rounded-lg"
-            >
-              <FiSave size={16} />
-            </button>
-          </div>
-        ) : (
-          <div className="flex justify-between items-center">
-            <p className="text-gray-700">{hero.subtext}</p>
-            <button
-              onClick={() => handleEdit("subtext", hero.subtext)}
-              className="text-gray-400 hover:text-orange-500"
-            >
-              <FiEdit2 size={16} />
-            </button>
-          </div>
+        {isEditBanner && (
+          <button
+            onClick={() => handleSaveBanner()}
+            className="bg-orange-500 text-white mt-2 flex gap-1 items-center px-3 py-1.5 rounded-lg"
+          >
+            Save Update
+            <FiSave size={16} />
+          </button>
         )}
       </div>
     </div>

@@ -37,7 +37,7 @@ const createReview = async (req, res) => {
 
   try {
     const review = {
-      nama: data.nama,
+      name: data.name,
       feedback: data.feedback,
       tenant: data.tenant,
       fileIMG: file ? file.filename : null,

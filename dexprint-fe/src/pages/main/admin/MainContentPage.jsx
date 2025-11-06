@@ -16,11 +16,6 @@ export default function MainContentPage() {
               Edit hero section, customer reviews, and brand partners
             </p>
           </div>
-          <div className="mt-4 sm:mt-0">
-            <button className="bg-orange-500 text-white font-semibold px-5 py-2 rounded-xl shadow hover:bg-orange-600 transition-all">
-              Save All Changes
-            </button>
-          </div>
         </div>
 
         {/* Section */}

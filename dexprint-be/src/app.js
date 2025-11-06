@@ -6,6 +6,7 @@ const socket = require("./services/socket.service"); // tambahkan ini
 
 const app = express();
 const server = createServer(app);
+socket.init(server);
 const mainRoute = require("./routes/routes");
 
 app.use(express.json());
@@ -35,8 +36,5 @@ app.use((req, res) => {
     message: "Endpoint not found",
   });
 });
-
-// === INIT WEBSOCKET ===
-socket.init(server);
 
 module.exports = { app, server };

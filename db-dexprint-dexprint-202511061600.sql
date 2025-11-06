@@ -16,6 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `categoryId` int NOT NULL AUTO_INCREMENT,
+  `categoryName` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`categoryId`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (2,'Banner'),(3,'Display Promosi'),(4,'Office Stationary'),(5,'Marketing Kits'),(6,'Souvenir / Merchandise'),(7,'Sticker'),(8,'Advertising');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `clients`
 --
 
@@ -29,7 +53,7 @@ CREATE TABLE `clients` (
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`clientId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +62,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (7,'Dexprint','logo_dexprint_orange-1762330105848-415934068.png','2025-11-05 08:08:25','2025-11-05 08:08:25'),(8,'AWALAN COFFEE','AWALAN-1762330148723-59507722.jpeg','2025-11-05 08:09:08','2025-11-05 08:09:08');
+INSERT INTO `clients` VALUES (7,'Dexprint','logo_dexprint_orange-1762330105848-415934068.png','2025-11-05 08:08:25','2025-11-05 08:08:25'),(9,'AWALAN COFFEE','AWALAN-1762396092519-614322191.jpeg','2025-11-06 02:28:12','2025-11-06 02:28:12');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,27 +100,87 @@ INSERT INTO `companyprofile` VALUES (1,'dexprint','085899310781','dexprint@gmail
 UNLOCK TABLES;
 
 --
--- Table structure for table `herosection`
+-- Table structure for table `hero_banner`
 --
 
-DROP TABLE IF EXISTS `herosection`;
+DROP TABLE IF EXISTS `hero_banner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `herosection` (
-  `heroId` int NOT NULL AUTO_INCREMENT,
-  `fileName` varchar(255) DEFAULT NULL,
-  `note` text,
-  PRIMARY KEY (`heroId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `hero_banner` (
+  `bannerId` int NOT NULL AUTO_INCREMENT,
+  `note` varchar(100) DEFAULT NULL,
+  `file` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`bannerId`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `herosection`
+-- Dumping data for table `hero_banner`
 --
 
-LOCK TABLES `herosection` WRITE;
-/*!40000 ALTER TABLE `herosection` DISABLE KEYS */;
-/*!40000 ALTER TABLE `herosection` ENABLE KEYS */;
+LOCK TABLES `hero_banner` WRITE;
+/*!40000 ALTER TABLE `hero_banner` DISABLE KEYS */;
+INSERT INTO `hero_banner` VALUES (12,'banner1.jpg','banner1-1762400946674-64541840.jpg'),(13,'banner2.jpg','banner2-1762400946714-960397991.jpg'),(14,'banner3.jpg','banner3-1762400946736-2129080.jpg');
+/*!40000 ALTER TABLE `hero_banner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `materials`
+--
+
+DROP TABLE IF EXISTS `materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `materials` (
+  `materialId` int NOT NULL AUTO_INCREMENT,
+  `materialName` varchar(255) DEFAULT NULL,
+  `size` int DEFAULT NULL,
+  `unit` varchar(100) DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `productId` int DEFAULT NULL,
+  PRIMARY KEY (`materialId`),
+  KEY `materials_products_FK` (`productId`),
+  CONSTRAINT `materials_products_FK` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `materials`
+--
+
+LOCK TABLES `materials` WRITE;
+/*!40000 ALTER TABLE `materials` DISABLE KEYS */;
+INSERT INTO `materials` VALUES (1,'Bahan 1',200,'gr',20000,1);
+/*!40000 ALTER TABLE `materials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `products` (
+  `productId` int NOT NULL AUTO_INCREMENT,
+  `productName` varchar(100) DEFAULT NULL,
+  `categoryId` int NOT NULL,
+  `description` text,
+  `productIMG` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`productId`),
+  KEY `products_categories_FK` (`categoryId`),
+  CONSTRAINT `products_categories_FK` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`categoryId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (1,'Cheescuit',6,'cheescuit rasa matcha','Gemini_Generated_Image_uvv2dauvv2dauvv2-1762417519154-446093627.png'),(2,'Cheesecuit Oreo',6,'Cheescuit oreo','cheesecuit_oreo-1762418793186-735934780.png');
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -113,7 +197,7 @@ CREATE TABLE `reviews` (
   `fileIMG` varchar(100) DEFAULT NULL,
   `tenant` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`reviewId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,6 +206,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,'Romi Rahman','Cetakan bagus, proses cepat, dan tidak mengecewakan. Pokonya recomended deh buat percetakan di karawang','CUP_Depan-1762393510409-581457974.png','Awalan Coffee'),(4,'Risya Ristia Wardah','Bagus banget, aku suka. Cetakan disini bagus dan cepat pula','AWALAN-1762394641307-118357379.jpeg','Awalan Coffee');
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,4 +302,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-05 15:24:04
+-- Dump completed on 2025-11-06 16:00:23

@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import CompanyProfileInfo from "./CompanyProfileInfo";
-import CompanyService from "./CompanyService";
-import api from "../../../../services/axios.service";
+import CompanyProfileInfo from "../../../components/main/admin/Profile/CompanyProfileInfo";
+
+import api from "../../../services/axios.service";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState([]);
